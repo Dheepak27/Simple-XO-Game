@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<style>
+    h1,h2
+    {
+        text-align: center;
+        color:whitesmoke;
+    }
+    body
+    {
+        /*background-color: aqua;*/
+        background-image: url(https://images.saymedia-content.com/.image/t_share/MTkzOTUzODU0MDkyODc5MzY1/particlesjs-examples.gif);
+    }
+    table,td
+    {
+        border:solid;
+        border-collapse: collapse;
+        width: 70px;
+        height:20px;
+        margin-top:70px ;
+        padding: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        border-color: aqua;
+    }
+    pre
+    {
+        font: Arial;
+        font-weight: bold;
+        font-style: italic;
+        font-size: 20px;
+        text-align: center;
+        color:white;
+    }
+    td:hover
+    {
+        background-color: black;
+    }
+    button
+    {
+        background-color: aqua;
+        font-size: 36px;
+        display: inline-block;
+        border:none;
+        outline: none;
+    }
+    td.X::before {
+        content: "X";
+        color:yellow;
+        display: inline-block;
+        font-size: 36px;
+    }
+    
+    td.O::before {
+        content: "O";
+        color:yellow;
+        display: inline-block;
+        font-size: 36px;
+    }
+</style>
+<body>
+<head>
+
+    <h1>PLAY XO</h1>
+    <h2>RULES</h2>
+    <pre>
+        1.Person starting first and second is player1,player2 respectively.
+        2.Person starting first will play with 'X' and person playing second will play with 'O'.
+        3.Other rules same as normal 'XO'.
+    </pre>
+    <div id="result"></div>
+    <table id="example-table">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <script>
+        let currentPlayer = 'X';
+        let gameOver = false;
+
+        const cells = document.querySelectorAll('td');
+        const resultDisplay = document.getElementById('result');
+
+        function checkWinner() {
+            const winningCombinations = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ];
+
+            for (const combination of winningCombinations) {
+                const [a, b, c] = combination;
+                if (
+                    cells[a].classList.contains(currentPlayer) &&
+                    cells[b].classList.contains(currentPlayer) &&
+                    cells[c].classList.contains(currentPlayer)
+                ) {
+                    gameOver = true;b  
+                    alert(`${currentPlayer} wins!`);
+                    window.location.reload(); 
+                    return;
+                }
+            }
+
+            if ([...cells].every(cell => cell.classList.contains('X') || cell.classList.contains('O'))) {
+                gameOver = true;
+                alert("It's a draw!");
+                window.location.reload(); 
+            }
+        }
+
+        cells.forEach((cell) => {
+            cell.addEventListener('click', () => {
+                if (!gameOver && !cell.classList.contains('X') && !cell.classList.contains('O')) {
+                    cell.classList.add(currentPlayer);
+                    checkWinner();
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                }
+            });
+        });
+    </script>
+
+</head>
+</body>
